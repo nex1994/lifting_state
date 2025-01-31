@@ -1,6 +1,6 @@
 import reactLogo from './assets/react.svg'
 import './App.css'
-import { Party } from './Party/Party'
+import { Groceries } from './Groceries'
 
 function App() {
 
@@ -12,7 +12,7 @@ function App() {
         </a>
       </div>
       <h1>React</h1>
-      <Party />
+      <Groceries />
     </>
   )
 }
