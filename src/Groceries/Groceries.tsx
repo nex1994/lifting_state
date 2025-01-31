@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { GroceriesForm } from "./GroceriesForm";
+import { GroceriesList } from "./GroceriesList";
 
 export const Groceries =() => {
     const [items, setItems] = useState([
@@ -21,19 +22,19 @@ export const Groceries =() => {
 			setItems(current => current.concat(item))
 		}
 
+		const removeItem = (id: number) => {
+			setItems(current => current.filter((item) => {
+				return item.id !== id
+			}))
+		}
+
 		return (
 			<div>
 				<h2>Groceries</h2>
 
 				<GroceriesForm onDataReady={addItem}/>
 				<h2>Added items</h2>
-				{items.map(item => {
-					return (
-						<ul>
-							<li>{item.name}</li>
-						</ul>
-					)
-				})}
+				<GroceriesList items={items} remove={removeItem}/>
 			</div>
 		)
 }
