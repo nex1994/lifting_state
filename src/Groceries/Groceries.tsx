@@ -28,13 +28,27 @@ export const Groceries =() => {
 			}))
 		}
 
+		const renameItem = (itemId: number, newName: string) => {
+			setItems(current => {
+				return current.map(item => {
+					if (item.id === itemId) {
+						return {
+							...item,
+							name: newName,
+						}
+					}
+					return item;
+				})
+			})
+		}
+
 		return (
 			<div>
 				<h2>Groceries</h2>
 
 				<GroceriesForm onDataReady={addItem}/>
 				<h2>Added items</h2>
-				<GroceriesList items={items} remove={removeItem}/>
+				<GroceriesList items={items} remove={removeItem} rename={renameItem}/>
 			</div>
 		)
 }
