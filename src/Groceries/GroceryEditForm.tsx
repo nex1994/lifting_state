@@ -6,18 +6,18 @@ type Props = {
     name: string;
   };
   rename: (itemId: number, newName: string) => void;
-  onCancel: () => void;
 
 };
 
-export const GroceryEditForm = ({ item, rename, onCancel }: Props) => {
+export const GroceryEditForm = ({ item, rename }: Props) => {
   const [newName, setNewName] = useState(item.name);
 
   const handleSubmit: FormEventHandler = (event) => {
     event.preventDefault();
     rename(item.id, newName);
-    onCancel();
   }
+
+
 
   return (
     <form onSubmit={handleSubmit}>
@@ -27,7 +27,6 @@ export const GroceryEditForm = ({ item, rename, onCancel }: Props) => {
         onChange={(event) => setNewName(event.target.value)}
       />
       <button type="submit">Save</button>
-      <button type="button" onClick={onCancel}>Cancel</button>
     </form>
   );
 };
