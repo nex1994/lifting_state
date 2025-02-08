@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useContext, useMemo, useState } from 'react';
+import React, { PropsWithChildren, useContext, useMemo, useReducer } from 'react';
 
 type RemoveItem = (itemId: number) => void;
 type RenameItem = (itemId: number, name: string) => void;
@@ -23,54 +23,99 @@ const Context = React.createContext<ContextValue | null>(null);
 
 type Props = PropsWithChildren
 
-export const GroceriesProvider = ({ children }: Props) => {
-  const [items, setItems] = useState([
-    {
-      id: 1,
-      name: "Bread",
-    },
-    {
-      id: 2,
-      name: "Cheese",
-    },
-    {
-      id: 3,
-      name: "Soda",
-    },
-  ]);
+type AddItemAction = {
+  type: 'addItem';
+  payload: {
+    item: Item
+  }
+}
 
-  const addItem = (item: { id: number; name: string }) => {
-    setItems((current) => current.concat(item));
-  };
+type RemoveItemAction = {
+  type: 'removeItem';
+  payload: {
+    id: number
+  }
+};
 
-  const removeItem = (id: number) => {
-    setItems((current) =>
-      current.filter((item) => {
-        return item.id !== id;
+type RenameItemAction = {
+  type: 'renameItem',
+  payload: {
+    itemId: number,
+    newName: string
+  }
+}
+
+type Action = AddItemAction | RemoveItemAction | RenameItemAction;
+
+type State = {
+  items: Item[];
+};
+
+const reducer = (state: State, action: Action): State => {
+  switch (action.type) {
+    case 'addItem': 
+      return {
+        ...state,
+        items: state.items.concat(action.payload.item),
+      }
+    case 'removeItem':
+      return {
+        ...state,
+        items: state.items.filter((item) => {
+        return item.id !== action.payload.id;
       })
-    );
-  };
-
-  const renameItem = (itemId: number, newName: string) => {
-    setItems((current) => {
-      return current.map((item) => {
-        if (item.id === itemId) {
+      }
+    case 'renameItem':
+      return {
+        ...state,
+        items: state.items.map((item) => {
+        if (item.id === action.payload.itemId) {
           return {
             ...item,
-            name: newName,
+            name: action.payload.newName,
           };
         }
         return item;
-      });
-    });
+      })
+      }
+    
+    default: 
+      return state
+  }
+}
+
+export const GroceriesProvider = ({ children }: Props) => {
+  const [state, dispatch] = useReducer(reducer, {
+    items: [
+      {
+        id: 1,
+        name: "Bread",
+      },
+      {
+        id: 2,
+        name: "Cheese",
+      },
+      {
+        id: 3,
+        name: "Soda",
+      },
+    ],
+  });
+  
+
+  const addItem = (item: { id: number; name: string }) => {
+    dispatch({ type: 'addItem', payload: { item } });
   };
 
-  const value = useMemo(() => {
-    return {
-      items,
-    };
-  }, [items])
+  const removeItem = (id: number) => {
+    dispatch({ type: 'removeItem', payload: { id } })
+  };
 
+  const renameItem = (itemId: number, newName: string) => {
+    dispatch({ type: 'renameItem', payload: { itemId, newName  } })
+  };
+
+  const value = state;
   const apiValue = useMemo(() => {
     return {
       addItem,
