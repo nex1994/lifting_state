@@ -1,11 +1,11 @@
-import { FormEventHandler, useContext, useState } from "react";
-import { Context } from "../Context";
+import { FormEventHandler, useState } from "react";
+import { useGroceriesApi } from "../Context";
 
 
 export const GroceriesForm =() => {
 	const [groceryName, setGroceryName] = useState('');
 
-	const {addItem} = useContext(Context);
+	const {addItem} = useGroceriesApi()
 
 		const handleSubmit: FormEventHandler = (event) => {
 			event.preventDefault();

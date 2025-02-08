@@ -1,11 +1,12 @@
-import { memo, useContext } from "react";
+import { memo } from "react";
 import { GroceryItem } from "./GroceryItem";
-import { Context } from "../Context";
+import { useGroceries, useGroceriesApi } from "../Context";
 
 
 
 export const GroceriesList = memo(() => {
-    const {removeItem, renameItem, items} = useContext(Context);
+    const {removeItem, renameItem} = useGroceriesApi();
+    const { items } = useGroceries()
     return (
         <ul>
           {items.map((item) => {

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useMemo, useState } from 'react';
+import React, { PropsWithChildren, useContext, useMemo, useState } from 'react';
 
 type RemoveItem = (itemId: number) => void;
 type RenameItem = (itemId: number, name: string) => void;
@@ -9,18 +9,17 @@ type Item = {
 };
 
 type ContextValue = {
-  removeItem: RemoveItem,
-  renameItem: RenameItem,
-  addItem: AddItem,
   items: Item[],
 };
+type ApiContextValue = {
+  addItem: AddItem;
+  removeItem: RemoveItem;
+  renameItem: RenameItem; 
+}
 
-export const Context = React.createContext<ContextValue>({
-  removeItem: () => {},
-  renameItem: () => {},
-  addItem: () => {},
-  items: [],
-});
+const ApiContext = React.createContext<ApiContextValue | null>(null);
+
+const Context = React.createContext<ContextValue | null>(null);
 
 type Props = PropsWithChildren
 
@@ -69,15 +68,43 @@ export const GroceriesProvider = ({ children }: Props) => {
   const value = useMemo(() => {
     return {
       items,
+    };
+  }, [items])
+
+  const apiValue = useMemo(() => {
+    return {
       addItem,
       removeItem,
       renameItem,
     };
-  }, [items])
+  }, []);
+
+
 
   return (
-    <Context.Provider value={value}>
-      {children}
-    </Context.Provider>
-  )
+    <ApiContext.Provider value={apiValue}>
+      <Context.Provider value={value}>{children}</Context.Provider>
+    </ApiContext.Provider>
+  );
 };
+
+export const useGroceries = () => {
+  const value = useContext(Context)
+
+  if (value === null) {
+    throw new Error("Groceries not found");
+  }
+
+  return value;
+}
+
+export const useGroceriesApi = () => {
+  const value = useContext(ApiContext);
+
+  if (value === null) {
+    throw new Error("GroceriesApi not found");
+    
+  }
+
+  return value;
+}
