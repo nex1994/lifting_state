@@ -1,23 +1,35 @@
 import { useReducer } from "react";
 
 type Action = 'increment' | 'decrement';
+type State = {
+  count: number;
+  title: string;
+}
 
-const reducer = (state: number, action: Action) => {
+const reducer = (state: State, action: Action) => {
   console.log(action)
 
-  if (action === 'increment') {
-    state = state + 1;
-  }
-
-  if (action === 'decrement') {
-    state = state - 1;
-  }
-
-  return state;
+  switch (action) {
+    case "increment": {
+      return {
+        ...state,
+        count: state.count + 1
+      }
+    }
+    case "decrement": {
+      return {
+        ...state,
+        count: state.count - 1
+      }
+    }
+    default: {
+      return state
+    }
+  } 
 }
 
 export const Reducer = () => {
-  const [count, dispatch] = useReducer(reducer, 0)
+  const [state, dispatch] = useReducer(reducer, {count: 0, title: 'My app'})
   // const [count, setCount] = useState(0);
 
   const increment = () => {
@@ -30,11 +42,11 @@ export const Reducer = () => {
 
   return (
     <div>
-      <h2>Reducer demo</h2>
+      <h2>Reducer demo {state.title}</h2>
       <p>
         Value:
         {' '}
-        <strong>{count}</strong>
+        <strong>{state.count}</strong>
       </p>
       <p>
         <button
