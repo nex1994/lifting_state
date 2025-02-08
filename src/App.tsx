@@ -1,6 +1,7 @@
 import reactLogo from './assets/react.svg'
 import './App.css'
-import { Groceries } from './Groceries'
+// import { Groceries } from './Groceries'
+import { ColorPicker } from './ColorPicker'
 
 function App() {
 
@@ -12,7 +13,7 @@ function App() {
         </a>
       </div>
       <h1>React</h1>
-      <Groceries />
+      <ColorPicker />
     </>
   )
 }
