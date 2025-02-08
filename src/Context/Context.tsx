@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useState } from 'react';
+import React, { PropsWithChildren, useMemo, useState } from 'react';
 
 type RemoveItem = (itemId: number) => void;
 type RenameItem = (itemId: number, name: string) => void;
@@ -66,16 +66,18 @@ export const GroceriesProvider = ({ children }: Props) => {
     });
   };
 
-  const value = {
-    items,
-    addItem,
-    removeItem,
-    renameItem,
-  }
+  const value = useMemo(() => {
+    return {
+      items,
+      addItem,
+      removeItem,
+      renameItem,
+    };
+  }, [items])
 
   return (
     <Context.Provider value={value}>
       {children}
     </Context.Provider>
   )
-}
+};

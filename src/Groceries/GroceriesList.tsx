@@ -1,10 +1,10 @@
-import { useContext } from "react";
+import { memo, useContext } from "react";
 import { GroceryItem } from "./GroceryItem";
 import { Context } from "../Context";
 
 
 
-export const GroceriesList = () => {
+export const GroceriesList = memo(() => {
     const {removeItem, renameItem, items} = useContext(Context);
     return (
         <ul>
@@ -17,4 +17,4 @@ export const GroceriesList = () => {
           })}
         </ul>
     )
-}
+});
