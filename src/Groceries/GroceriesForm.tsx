@@ -1,14 +1,15 @@
-import { FormEventHandler, useState } from "react";
+import { FormEventHandler, useContext, useState } from "react";
+import { Context } from "../Context";
 
-type Props = {
-	onDataReady: (item: { id: number, name: string }) => void
-};
-export const GroceriesForm =({ onDataReady }: Props) => {
+
+export const GroceriesForm =() => {
 	const [groceryName, setGroceryName] = useState('');
+
+	const {addItem} = useContext(Context);
 
 		const handleSubmit: FormEventHandler = (event) => {
 			event.preventDefault();
-			onDataReady({ id: Date.now(), name: groceryName })
+			addItem({ id: Date.now(), name: groceryName })
 			setGroceryName('');
 		};
 

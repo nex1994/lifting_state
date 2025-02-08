@@ -1,21 +1,17 @@
+import { useContext } from "react";
 import { GroceryItem } from "./GroceryItem";
+import { Context } from "../Context";
 
-type Props = {
-  items: {
-    id: number;
-    name: string;
-  }[];
-  remove: (id: number) => void;
-  rename: (itemId: number, newName: string) => void
-}
 
-export const GroceriesList = ({ items, remove, rename }: Props) => {
+
+export const GroceriesList = () => {
+    const {removeItem, renameItem, items} = useContext(Context);
     return (
         <ul>
           {items.map((item) => {
             return (
               <li key={item.id}>
-                <GroceryItem remove={remove} rename={rename} item={item}/>
+                <GroceryItem remove={removeItem} rename={renameItem} item={item}/>
               </li>
             );
           })}

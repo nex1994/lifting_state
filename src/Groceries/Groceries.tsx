@@ -1,55 +1,19 @@
-import { useState } from "react";
 import { GroceriesForm } from "./GroceriesForm";
 import { GroceriesList } from "./GroceriesList";
+import { GroceriesProvider } from "../Context";
 
 export const Groceries =() => {
-    const [items, setItems] = useState([
-			{
-        id: 1,
-        name: 'Bread',
-    	},
-			{
-				id: 2,
-				name: 'Cheese',
-			},
-			{
-				id: 3,
-				name:'Soda',
-			},
-    ]);
-
-		const addItem = (item: { id: number, name: string }) => {
-			setItems(current => current.concat(item))
-		}
-
-		const removeItem = (id: number) => {
-			setItems(current => current.filter((item) => {
-				return item.id !== id
-			}))
-		}
-
-		const renameItem = (itemId: number, newName: string) => {
-			setItems(current => {
-				return current.map(item => {
-					if (item.id === itemId) {
-						return {
-							...item,
-							name: newName,
-						}
-					}
-					return item;
-				})
-			})
-		}
-
+    
 		return (
-			<div>
-				<h2>Groceries</h2>
+      <div>
+        <GroceriesProvider>
+          <h2>Groceries</h2>
 
-				<GroceriesForm onDataReady={addItem}/>
-				<h2>Added items</h2>
-				<GroceriesList items={items} remove={removeItem} rename={renameItem}/>
-			</div>
-		)
+          <GroceriesForm  />
+          <h2>Added items</h2>
+            <GroceriesList/>
+        </GroceriesProvider>
+      </div>
+    );
 }
 
