@@ -1,6 +1,7 @@
 import reactLogo from './assets/react.svg'
 import './App.css'
-import { Groceries } from './Groceries'
+import { DataFetchingDemo } from './DataFetchingDemo'
+// import { Groceries } from './Groceries'
 // import { Reducer } from './ReducerDemo'
 // import { ColorPicker } from './ColorPicker'
 
@@ -14,7 +15,7 @@ function App() {
         </a>
       </div>
       <h1>React</h1>
-      <Groceries />
+      <DataFetchingDemo />
     </>
   )
 }
